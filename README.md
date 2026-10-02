@@ -1,35 +1,42 @@
 # E-Book Store
 
-A full-stack software engineering project with a Java/Spring backend and a modern JavaScript frontend.
+A full-stack learning project with a Java/Spring Boot backend, PostgreSQL persistence, and a Vite-based frontend. The repository is useful as application evidence that can be extended into a cloud-native delivery project.
+
+## What this repo proves
+
+- Spring Boot backend with REST controllers for books, categories, and health checks.
+- JPA entities and repositories for PostgreSQL persistence.
+- Vite frontend structure with API client separation.
+- Maven and npm lock/wrapper files for reproducible local builds.
+- Environment-driven backend database configuration instead of committed runtime secrets.
+- Architecture notes in [`architecture.md`](architecture.md).
 
 ## Architecture
 
 ```text
-Web client
+Browser
    |
    v
-Frontend application
+Vite frontend
    |
    v
-Spring backend
+Spring Boot API
    |
    v
-Application persistence
+PostgreSQL
 ```
 
 ## Repository layout
 
 ```text
 .
-├── backend/       # Maven / Spring application
-├── frontend/      # Vite-based frontend
+├── backend/       # Maven / Spring Boot API
+├── frontend/      # Vite frontend
 ├── architecture.md
 └── README.md
 ```
 
 ## Backend
-
-The backend is a Maven-managed Java application with source under `backend/src`. The Maven wrapper is included, making the project reproducible without requiring a globally installed Maven version.
 
 ```bash
 cd backend
@@ -37,9 +44,18 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-## Frontend
+Expected environment variables:
 
-The frontend uses a Node.js toolchain with Vite and includes a dependency lockfile for reproducible installs.
+```bash
+SERVER_PORT=8080
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/ebookstore
+SPRING_DATASOURCE_USERNAME=ebookuser
+SPRING_DATASOURCE_PASSWORD=change-me
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_SHOW_SQL=false
+```
+
+## Frontend
 
 ```bash
 cd frontend
@@ -47,21 +63,19 @@ npm ci
 npm run dev
 ```
 
-## Engineering focus
-
-This repository demonstrates separation of frontend and backend concerns, reproducible dependency management, and a full-stack application structure that can be extended with containerization, automated testing, CI/CD, infrastructure provisioning, and cloud deployment.
+The frontend API client currently points at `http://localhost:8080/api` for local development.
 
 ## DevOps extension path
 
-A production-oriented evolution of this project would include:
+This repository is presented as a software engineering project with a clear path toward platform work. A stronger DevOps version would add:
 
-- Docker images for frontend and backend
-- CI validation and automated tests
-- Container image scanning
-- Registry publishing
-- Infrastructure as Code
-- Kubernetes deployment manifests
-- Health probes and resource controls
-- Metrics, logs, and alerting
+- Dockerfiles for backend and frontend.
+- Local compose stack for frontend, backend, and PostgreSQL.
+- CI jobs for Maven tests, frontend lint/build, dependency audit, and image scanning.
+- Kubernetes manifests with readiness/liveness probes and resource controls.
+- Migration tooling before using shared databases.
+- Metrics, structured logs, and deployment runbooks.
 
-This repository is presented as a software engineering project; the DevOps portfolio projects on this profile demonstrate those delivery and operations patterns separately.
+## Portfolio note
+
+This is not claimed as a production deployment. It supports the portfolio by showing application code that can be delivered through the stronger CI/CD and Kubernetes patterns demonstrated in the DevOps-focused repositories.
